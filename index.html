@@ -29,8 +29,16 @@
 
         .header h1 {
             font-size: 2.5rem;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             text-shadow: 0 0 10px #bf00ff, 0 0 20px #bf00ff;
+        }
+
+        .score-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d2ff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00d2ff;
         }
 
         .video-section {
@@ -70,7 +78,7 @@
 
         .player-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 비율 유지 */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             border-radius: 10px;
@@ -134,7 +142,7 @@
         }
 
         #message {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: bold;
             min-height: 1.5em;
         }
@@ -145,34 +153,37 @@
 <div class="main-container">
     <div class="header">
         <h1>ㅈ@ㅎ이 발라드 취향 맞추기</h1>
+        <div id="scoreDisplay" class="score-display">현재 점수: 0점</div>
     </div>
     
-    <div class="video-section">
-        <div class="video-card">
-            <div class="badge">1</div>
-            <div class="player-wrapper">
-                <div id="player1"></div>
+    <div id="quizArea">
+        <div class="video-section">
+            <div class="video-card">
+                <div class="badge">1</div>
+                <div class="player-wrapper">
+                    <div id="player1"></div>
+                </div>
+                <div class="song-info">
+                    <p class="song-title" id="title1"></p>
+                    <p class="artist-name" id="artist1"></p>
+                </div>
             </div>
-            <div class="song-info">
-                <p class="song-title">한 페이지가 될 수 있게</p>
-                <p class="artist-name">DAY6</p>
+            <div class="video-card">
+                <div class="badge">2</div>
+                <div class="player-wrapper">
+                    <div id="player2"></div>
+                </div>
+                <div class="song-info">
+                    <p class="song-title" id="title2"></p>
+                    <p class="artist-name" id="artist2"></p>
+                </div>
             </div>
         </div>
-        <div class="video-card">
-            <div class="badge">2</div>
-            <div class="player-wrapper">
-                <div id="player2"></div>
-            </div>
-            <div class="song-info">
-                <p class="song-title">예뻤어</p>
-                <p class="artist-name">DAY6</p>
-            </div>
+        
+        <div class="button-section">
+            <button class="btn btn-1" onclick="checkAnswer(0)">1번 영상이 정답!</button>
+            <button class="btn btn-2" onclick="checkAnswer(1)">2번 영상이 정답!</button>
         </div>
-    </div>
-    
-    <div class="button-section">
-        <button class="btn btn-1" onclick="checkAnswer(0)">1번 영상이 정답!</button>
-        <button class="btn btn-2" onclick="checkAnswer(1)">2번 영상이 정답!</button>
     </div>
     
     <div id="message"></div>
@@ -180,39 +191,98 @@
 
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    const quiz = {
-        correctIndex: 0,
-        videoIds: ["0kQzjDaDxZM", "kO8fAn_A0p8"],
-        startTime: 60
-    };
+    const quizList = [
+        {
+            correctIndex: 0,
+            videoIds: ["0kQzjDaDxZM", "kO8fAn_A0p8"],
+            startTime: 60,
+            titles: ["한 페이지가 될 수 있게", "예뻤어"],
+            artists: ["DAY6", "DAY6"]
+        },
+        {
+            correctIndex: 1,
+            videoIds: ["I3U0QAXeOW4", "_78CYlWmigI"],
+            startTime: 45,
+            titles: ["테스트 곡 1", "테스트 곡 2"],
+            artists: ["가수 A", "가수 B"]
+        }
+    ];
 
+    let currentQuizIndex = 0;
+    let score = 0;
     let players = [];
+    let isWaitingNext = false;
 
     function onYouTubeIframeAPIReady() {
-        quiz.videoIds.forEach((id, index) => {
-            players[index] = new YT.Player('player' + (index + 1), {
-                videoId: id,
-                playerVars: { 
-                    'start': quiz.startTime, 
-                    'autoplay': 1, 
-                    'mute': 1, /* 자동 재생을 위해 음소거 추가 */
-                    'loop': 1, 
-                    'playlist': id,
-                    'origin': window.location.protocol + '//' + window.location.host
-                }
-            });
+        const currentQuiz = quizList[currentQuizIndex];
+        
+        players[0] = new YT.Player('player1', {
+            videoId: currentQuiz.videoIds[0],
+            playerVars: { 
+                'start': currentQuiz.startTime, 
+                'autoplay': 1, 
+                'mute': 1,
+                'loop': 1, 
+                'playlist': currentQuiz.videoIds[0],
+                'origin': window.location.protocol + '//' + window.location.host
+            }
         });
+        
+        players[1] = new YT.Player('player2', {
+            videoId: currentQuiz.videoIds[1],
+            playerVars: { 
+                'start': currentQuiz.startTime, 
+                'autoplay': 1, 
+                'mute': 1,
+                'loop': 1, 
+                'playlist': currentQuiz.videoIds[1],
+                'origin': window.location.protocol + '//' + window.location.host
+            }
+        });
+
+        updateQuizInfo();
+    }
+
+    function updateQuizInfo() {
+        const currentQuiz = quizList[currentQuizIndex];
+        document.getElementById('title1').innerText = currentQuiz.titles[0];
+        document.getElementById('artist1').innerText = currentQuiz.artists[0];
+        document.getElementById('title2').innerText = currentQuiz.titles[1];
+        document.getElementById('artist2').innerText = currentQuiz.artists[1];
+        document.getElementById('message').innerText = "";
+        isWaitingNext = false;
     }
 
     function checkAnswer(choice) {
+        if (isWaitingNext) return;
+        isWaitingNext = true;
+
         const msg = document.getElementById('message');
-        if (choice === quiz.correctIndex) {
+        const currentQuiz = quizList[currentQuizIndex];
+
+        if (choice === currentQuiz.correctIndex) {
+            score++;
+            document.getElementById('scoreDisplay').innerText = `현재 점수: ${score}점`;
             msg.style.color = "#2ecc71";
-            msg.innerText = "🎉 정답! 역시 넌 날 잘 알아!";
+            msg.innerText = "🎉 정답! 1점 획득! 다음 문제로 넘어갑니다.";
         } else {
             msg.style.color = "#e74c3c";
-            msg.innerText = "땡! 틀렸어 ㅠㅠ 다시 골라봐!";
+            msg.innerText = "땡! 틀렸습니다 ㅠㅠ 다음 문제로 넘어갑니다.";
         }
+
+        setTimeout(() => {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizList.length) {
+                const nextQuiz = quizList[currentQuizIndex];
+                players[0].loadVideoById({videoId: nextQuiz.videoIds[0], startSeconds: nextQuiz.startTime});
+                players[1].loadVideoById({videoId: nextQuiz.videoIds[1], startSeconds: nextQuiz.startTime});
+                updateQuizInfo();
+            } else {
+                document.getElementById('quizArea').style.display = 'none';
+                msg.style.color = "#ff007f";
+                msg.innerText = `퀴즈 끝! 최종 점수는 ${score}점 입니다!`;
+            }
+        }, 2000);
     }
 </script>
 </body>
