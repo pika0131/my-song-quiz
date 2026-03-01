@@ -1,6 +1,8 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
 body {
-    font-family: 'Poppins', 'Pretendard', sans-serif; /* 🚨 여기 'Pretendard' 뒤에 콤마 확실히 넣었습니다! */
-    background: linear-gradient(135deg, #1a0a3a 0%, #0d173d 100%); /* 배경 그라데이션 복구 */
+    font-family: 'Poppins', 'Pretendard', sans-serif;
+    background: linear-gradient(135deg, #1a0a3a 0%, #0d173d 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +19,7 @@ body {
     border-radius: 40px; 
     box-shadow: 0 0 40px rgba(191, 0, 255, 0.4);
     width: 100%;
-    max-width: 1200px; /* 시원하게 넓힌 너비 */
+    max-width: 1200px; 
     text-align: center;
     border: 3px solid #bf00ff;
 }
@@ -47,14 +49,14 @@ body {
     background: rgba(13, 23, 61, 0.9);
     border-radius: 30px; 
     padding: 25px; 
-    width: 48%; /* 카드 너비 */
+    width: 48%;
     border: 3px solid #bf00ff; 
     position: relative;
 }
 
 .player-wrapper {
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 비율 유지 */
+    padding-bottom: 56.25%; 
     height: 0;
     overflow: hidden;
     border-radius: 15px; 
@@ -66,8 +68,8 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%; /* 부모 요소를 꽉 채우도록 수정 */
-    height: 100%; /* 부모 요소를 꽉 채우도록 수정 */
+    width: 100%;
+    height: 100%;
     border: 0;
 }
 
