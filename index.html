@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>최애곡 2지선다 퀴즈</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Pretendard', sans-serif;
+            background: linear-gradient(135deg, #1a0a3a 0%, #0d173d 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+        }
+
+        .main-container {
+            background: rgba(13, 23, 61, 0.8);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 0 30px rgba(191, 0, 255, 0.3);
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            border: 2px solid #bf00ff;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #bf00ff, 0 0 20px #bf00ff;
+        }
+
+        .video-section {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .video-card {
+            background: rgba(13, 23, 61, 0.9);
+            border-radius: 20px;
+            padding: 15px;
+            width: 45%;
+            border: 2px solid #bf00ff;
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #bf00ff;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px #bf00ff;
+            z-index: 10;
+        }
+
+        .player-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 비율 유지 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #000;
+            margin-bottom: 10px;
+        }
+
+        .player-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .song-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+            text-shadow: 0 0 5px #ff007f;
+        }
+
+        .artist-name {
+            font-size: 0.9rem;
+            color: #bf00ff;
+            margin: 0;
+        }
+
+        .button-section {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-1 {
+            background: linear-gradient(135deg, #00d2ff 0%, #bf00ff 100%);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+        }
+
+        .btn-2 {
+            background: linear-gradient(135deg, #ff007f 0%, #ff8800 100%);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        #message {
+            font-size: 1.3rem;
+            font-weight: bold;
+            min-height: 1.5em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="header">
+        <h1>내 최애곡을 골라봐!</h1>
+    </div>
+    
+    <div class="video-section">
+        <div class="video-card">
+            <div class="badge">1</div>
+            <div class="player-wrapper">
+                <div id="player1"></div>
+            </div>
+            <div class="song-info">
+                <p class="song-title">한 페이지가 될 수 있게</p>
+                <p class="artist-name">DAY6</p>
+            </div>
+        </div>
+        <div class="video-card">
+            <div class="badge">2</div>
+            <div class="player-wrapper">
+                <div id="player2"></div>
+            </div>
+            <div class="song-info">
+                <p class="song-title">예뻤어</p>
+                <p class="artist-name">DAY6</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="button-section">
+        <button class="btn btn-1" onclick="checkAnswer(0)">1번 영상이 정답!</button>
+        <button class="btn btn-2" onclick="checkAnswer(1)">2번 영상이 정답!</button>
+    </div>
+    
+    <div id="message"></div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    const quiz = {
+        correctIndex: 0,
+        videoIds: ["v7bnOxL4j3Y", "kO8fAn_A0p8"],
+        startTime: 60
+    };
+
+    let players = [];
+
+    function onYouTubeIframeAPIReady() {
+        quiz.videoIds.forEach((id, index) => {
+            players[index] = new YT.Player('player' + (index + 1), {
+                videoId: id,
+                playerVars: { 
+                    'start': quiz.startTime, 
+                    'autoplay': 1, 
+                    'mute': 1, /* 자동 재생을 위해 음소거 추가 */
+                    'loop': 1, 
+                    'playlist': id,
+                    'origin': window.location.protocol + '//' + window.location.host
+                }
+            });
+        });
+    }
+
+    function checkAnswer(choice) {
+        const msg = document.getElementById('message');
+        if (choice === quiz.correctIndex) {
+            msg.style.color = "#2ecc71";
+            msg.innerText = "🎉 정답! 역시 넌 날 잘 알아!";
+        } else {
+            msg.style.color = "#e74c3c";
+            msg.innerText = "땡! 틀렸어 ㅠㅠ 다시 골라봐!";
+        }
+    }
+</script>
+</body>
+</html>
