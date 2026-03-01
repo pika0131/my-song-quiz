@@ -1,7 +1,5 @@
-// script.js
-
 const quizData = [
-    // 1번 문제 (에러 안나는 교차편집 영상 ID로 교체)
+    // 1번 문제
     {
         correctIndex: 0,
         options: [
@@ -9,7 +7,7 @@ const quizData = [
             { id: "I3U0QAXeOW4", start: 57, title: "예뻤어", artist: "DAY6" }
         ]
     },
-    // 2번 문제 
+    // 2번 문제
     {
         correctIndex: 0,
         options: [
@@ -101,7 +99,7 @@ function renderQuiz() {
     document.getElementById('title2').innerText = currentData.options[1].title;
     document.getElementById('artist2').innerText = currentData.options[1].artist;
 
-    document.getElementById('feedback').innerText = "";
+    // 이전 문제의 정답/오답 텍스트를 남겨두기 위해 초기화 코드를 삭제했습니다.
     isProcessing = false;
 }
 
@@ -112,27 +110,28 @@ function submitAnswer(selectedIndex) {
     const feedbackText = document.getElementById('feedback');
     const correctIndex = quizData[currentIndex].correctIndex;
 
+    // 점수 및 결과 텍스트 즉시 업데이트
     if (selectedIndex === correctIndex) {
         currentScore++;
         document.getElementById('scoreDisplay').innerText = `현재 점수: ${currentScore}점`;
         feedbackText.style.color = "#4facfe";
-        feedbackText.innerText = "정답입니다! 다음 문제로 이동합니다.";
+        feedbackText.innerText = "이전 문제: 정답! 🎉";
     } else {
         feedbackText.style.color = "#ff4b2b";
-        feedbackText.innerText = "틀렸습니다! 다음 문제로 이동합니다.";
+        feedbackText.innerText = "이전 문제: 땡! 오답 ㅠㅠ";
     }
 
-    setTimeout(() => {
-        currentIndex++;
-        if (currentIndex < quizData.length) {
-            renderQuiz();
-        } else {
-            // 10문제가 모두 끝나면 결과 화면 표시
-            document.getElementById('quizContainer').style.display = 'none';
-            feedbackText.style.color = "#ffffff";
-            feedbackText.innerText = `퀴즈 종료! 최종 점수: ${currentScore} / 10점`;
-        }
-    }, 2000);
+    // 대기 시간(setTimeout) 없이 즉시 다음 문제로 인덱스 이동
+    currentIndex++;
+
+    if (currentIndex < quizData.length) {
+        renderQuiz();
+    } else {
+        // 10문제가 모두 끝나면 결과 화면 표시
+        document.getElementById('quizContainer').style.display = 'none';
+        feedbackText.style.color = "#ffffff";
+        feedbackText.innerText = `퀴즈 종료! 최종 점수: ${currentScore} / 10점`;
+    }
 }
 
 window.onload = renderQuiz;
