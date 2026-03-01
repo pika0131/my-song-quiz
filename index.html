@@ -3,175 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>ㅈ@ㅎ이 발라드 취향 맞추기</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', 'Pretendard', sans-serif;
-            background: linear-gradient(135deg, #1a0a3a 0%, #0d173d 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            color: white;
-        }
-
-        .main-container {
-            background: rgba(13, 23, 61, 0.8);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 0 30px rgba(191, 0, 255, 0.3);
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-            border: 2px solid #bf00ff;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px #bf00ff, 0 0 20px #bf00ff;
-        }
-
-        .score-display {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #00d2ff;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00d2ff;
-        }
-
-        .video-section {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .video-card {
-            background: rgba(13, 23, 61, 0.9);
-            border-radius: 20px;
-            padding: 15px;
-            width: 45%;
-            border: 2px solid #bf00ff;
-            position: relative;
-        }
-
-        .badge {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #bf00ff;
-            color: white;
-            font-size: 1.2rem;
-            font-weight: bold;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 10px #bf00ff;
-            z-index: 10;
-        }
-
-        .player-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 비율 유지 */
-            height: 0;
-            overflow: hidden;
-            border-radius: 10px;
-            background: #000;
-            margin-bottom: 10px;
-        }
-
-        .player-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        .song-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin: 0 0 5px 0;
-            text-shadow: 0 0 5px #ff007f;
-        }
-
-        .artist-name {
-            font-size: 0.9rem;
-            color: #bf00ff;
-            margin: 0;
-        }
-
-        .button-section {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            padding: 15px 25px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            border: none;
-            transition: transform 0.3s ease;
-            width: 100%;
-        }
-
-        .btn-1 {
-            background: linear-gradient(135deg, #00d2ff 0%, #bf00ff 100%);
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
-        }
-
-        .btn-2 {
-            background: linear-gradient(135deg, #ff007f 0%, #ff8800 100%);
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-        }
-
-        #message {
-            font-size: 1.5rem;
-            font-weight: bold;
-            min-height: 1.5em;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="main-container">
+<div class="container">
     <div class="header">
         <h1>ㅈ@ㅎ이 발라드 취향 맞추기</h1>
-        <div id="scoreDisplay" class="score-display">현재 점수: 0점</div>
+        <div class="score-board" id="scoreDisplay">현재 점수: 0점</div>
     </div>
     
-    <div id="quizArea">
-        <div class="video-section">
+    <div id="quizContainer">
+        <div class="quiz-section">
             <div class="video-card">
-                <div class="badge">1</div>
-                <div class="player-wrapper">
-                    <div id="player1"></div>
+                <div class="iframe-container">
+                    <iframe id="videoPlayer1" allow="autoplay"></iframe>
                 </div>
                 <div class="song-info">
                     <p class="song-title" id="title1"></p>
                     <p class="artist-name" id="artist1"></p>
                 </div>
             </div>
+            
             <div class="video-card">
-                <div class="badge">2</div>
-                <div class="player-wrapper">
-                    <div id="player2"></div>
+                <div class="iframe-container">
+                    <iframe id="videoPlayer2" allow="autoplay"></iframe>
                 </div>
                 <div class="song-info">
                     <p class="song-title" id="title2"></p>
@@ -180,112 +36,15 @@
             </div>
         </div>
         
-        <div class="button-section">
-            <button class="btn btn-1" onclick="checkAnswer(0)">1번 영상이 정답!</button>
-            <button class="btn btn-2" onclick="checkAnswer(1)">2번 영상이 정답!</button>
+        <div class="button-group">
+            <button class="answer-btn btn-left" onclick="submitAnswer(0)">왼쪽 곡 선택</button>
+            <button class="answer-btn btn-right" onclick="submitAnswer(1)">오른쪽 곡 선택</button>
         </div>
     </div>
-    
-    <div id="message"></div>
+
+    <div id="feedback"></div>
 </div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
-<script>
-    // 🎵 퀴즈 목록 (여기에 원하는 곡을 계속 추가하세요!)
-    const quizList = [
-        {
-            correctIndex: 0,
-            videoIds: ["0kQzjDaDxZM&t", "kO8fAn_A0p8"],
-            startTime: 60,
-            titles: ["한 페이지가 될 수 있게", "예뻤어"],
-            artists: ["DAY6", "DAY6"]
-        },
-        {
-            correctIndex: 1,
-            videoIds: ["I3U0QAXeOW4", "_78CYlWmigI"], 
-            startTime: 45,
-            titles: ["예뻤어 (교차편집)", "한 페이지가 될 수 있게 (교차편집)"],
-            artists: ["DAY6", "DAY6"]
-        }
-    ];
-
-    let currentQuizIndex = 0;
-    let score = 0;
-    let players = [];
-    let isWaitingNext = false;
-
-    function onYouTubeIframeAPIReady() {
-        const currentQuiz = quizList[currentQuizIndex];
-        
-        players[0] = new YT.Player('player1', {
-            videoId: currentQuiz.videoIds[0],
-            playerVars: { 
-                'start': currentQuiz.startTime, 
-                'autoplay': 1, 
-                'mute': 1, // 자동 재생을 위해 음소거 필수
-                'origin': window.location.protocol + '//' + window.location.host
-            }
-        });
-        
-        players[1] = new YT.Player('player2', {
-            videoId: currentQuiz.videoIds[1],
-            playerVars: { 
-                'start': currentQuiz.startTime, 
-                'autoplay': 1, 
-                'mute': 1,
-                'origin': window.location.protocol + '//' + window.location.host
-            }
-        });
-
-        updateQuizInfo();
-    }
-
-    function updateQuizInfo() {
-        const currentQuiz = quizList[currentQuizIndex];
-        document.getElementById('title1').innerText = currentQuiz.titles[0];
-        document.getElementById('artist1').innerText = currentQuiz.artists[0];
-        document.getElementById('title2').innerText = currentQuiz.titles[1];
-        document.getElementById('artist2').innerText = currentQuiz.artists[1];
-        document.getElementById('message').innerText = "";
-        isWaitingNext = false;
-    }
-
-    function checkAnswer(choice) {
-        if (isWaitingNext) return;
-        isWaitingNext = true; // 중복 클릭 방지
-
-        const msg = document.getElementById('message');
-        const currentQuiz = quizList[currentQuizIndex];
-
-        if (choice === currentQuiz.correctIndex) {
-            score++;
-            document.getElementById('scoreDisplay').innerText = `현재 점수: ${score}점`;
-            msg.style.color = "#2ecc71";
-            msg.innerText = "🎉 정답! 1점 획득! 다음 문제로 넘어갑니다.";
-        } else {
-            msg.style.color = "#e74c3c";
-            msg.innerText = "땡! 틀렸습니다 ㅠㅠ 다음 문제로 넘어갑니다.";
-        }
-
-        // 2초 뒤에 다음 곡으로 넘어가기
-        setTimeout(() => {
-            currentQuizIndex++;
-            if (currentQuizIndex < quizList.length) {
-                const nextQuiz = quizList[currentQuizIndex];
-                
-                // 유튜브 API로 다음 영상 로드하기
-                players[0].loadVideoById(nextQuiz.videoIds[0], nextQuiz.startTime);
-                players[1].loadVideoById(nextQuiz.videoIds[1], nextQuiz.startTime);
-                
-                updateQuizInfo();
-            } else {
-                // 준비된 퀴즈가 끝나면 화면 숨기고 최종 점수 표시
-                document.getElementById('quizArea').style.display = 'none';
-                msg.style.color = "#ff007f";
-                msg.innerText = `퀴즈 끝! 최종 점수는 ${score}점 입니다!`;
-            }
-        }, 2000);
-    }
-</script>
+<script src="script.js"></script>
 </body>
 </html>
