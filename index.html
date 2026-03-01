@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>ㅈ@ㅎ이 발라드 취향 맞추기</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
+<div class="main-container">
     <div class="header">
         <h1>ㅈ@ㅎ이 발라드 취향 맞추기</h1>
-        <div class="score-board" id="scoreDisplay">현재 점수: 0점</div>
+        <div id="scoreDisplay" class="score-display">현재 점수: 0점</div>
     </div>
     
-    <div id="quizContainer">
-        <div class="quiz-section">
+    <div id="quizArea">
+        <div class="video-section">
             <div class="video-card">
-                <div class="iframe-container">
+                <div class="player-wrapper">
                     <iframe id="videoPlayer1" allow="autoplay"></iframe>
                 </div>
                 <div class="song-info">
@@ -24,9 +25,8 @@
                     <p class="artist-name" id="artist1"></p>
                 </div>
             </div>
-            
             <div class="video-card">
-                <div class="iframe-container">
+                <div class="player-wrapper">
                     <iframe id="videoPlayer2" allow="autoplay"></iframe>
                 </div>
                 <div class="song-info">
@@ -36,13 +36,13 @@
             </div>
         </div>
         
-        <div class="button-group">
-            <button class="answer-btn btn-left" onclick="submitAnswer(0)">왼쪽 곡 선택</button>
-            <button class="answer-btn btn-right" onclick="submitAnswer(1)">오른쪽 곡 선택</button>
+        <div class="button-section">
+            <button class="btn btn-1" onclick="submitAnswer(0)">왼쪽 곡 선택</button>
+            <button class="btn btn-2" onclick="submitAnswer(1)">오른쪽 곡 선택</button>
         </div>
     </div>
-
-    <div id="feedback"></div>
+    
+    <div id="message"></div>
 </div>
 
 <script src="script.js"></script>
