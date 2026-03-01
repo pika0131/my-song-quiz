@@ -1,6 +1,6 @@
 body {
-    font-family: 'Poppins' 'Pretendard' sans-serif;
-    background: linear-gradient(135deg #1a0a3a 0% #0d173d 100%);
+    font-family: 'Poppins', 'Pretendard', sans-serif;
+    background: linear-gradient(135deg, #1a0a3a 0%, #0d173d 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,10 +12,10 @@ body {
 }
 
 .main-container {
-    background: rgba(13 23 61 0.8);
+    background: rgba(13, 23, 61, 0.8);
     padding: 60px; 
     border-radius: 40px; 
-    box-shadow: 0 0 40px rgba(191 0 255 0.4);
+    box-shadow: 0 0 40px rgba(191, 0, 255, 0.4);
     width: 100%;
     max-width: 1200px; 
     text-align: center;
@@ -25,7 +25,7 @@ body {
 .header h1 {
     font-size: 3.5rem; 
     margin-bottom: 10px;
-    text-shadow: 0 0 15px #bf00ff 0 0 30px #bf00ff; 
+    text-shadow: 0 0 15px #bf00ff, 0 0 30px #bf00ff; 
 }
 
 .score-display {
@@ -44,7 +44,7 @@ body {
 }
 
 .video-card {
-    background: rgba(13 23 61 0.9);
+    background: rgba(13, 23, 61, 0.9);
     border-radius: 30px; 
     padding: 25px; 
     width: 48%;
@@ -54,7 +54,7 @@ body {
 
 .player-wrapper {
     position: relative;
-    padding-bottom: 56.25%; 
+    padding-bottom: 56.25%; /* 16:9 비율 유지 */
     height: 0;
     overflow: hidden;
     border-radius: 15px; 
@@ -62,6 +62,7 @@ body {
     margin-bottom: 20px;
 }
 
+/* 🚨 여기가 영상 크기를 꽉 채워주는 핵심 코드입니다! */
 .player-wrapper iframe {
     position: absolute;
     top: 0;
@@ -104,13 +105,13 @@ body {
 }
 
 .btn-1 {
-    background: linear-gradient(135deg #00d2ff 0% #bf00ff 100%);
-    box-shadow: 0 0 15px rgba(0 210 255 0.5);
+    background: linear-gradient(135deg, #00d2ff 0%, #bf00ff 100%);
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
 }
 
 .btn-2 {
-    background: linear-gradient(135deg #ff007f 0% #ff8800 100%);
-    box-shadow: 0 0 15px rgba(255 0 127 0.5);
+    background: linear-gradient(135deg, #ff007f 0%, #ff8800 100%);
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
 }
 
 .btn:hover {
