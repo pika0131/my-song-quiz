@@ -9,69 +9,69 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    padding: 20px;
+    padding: 40px;
     box-sizing: border-box;
 }
 
 .container {
     background-color: #1e1e1e;
-    padding: 40px;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    padding: 60px;
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     width: 100%;
-    max-width: 900px;
+    max-width: 1400px; /* 여기서 전체 너비를 확 키웠어 */
     text-align: center;
 }
 
 .header {
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
 .header h1 {
-    font-size: 2.2rem;
+    font-size: 3.5rem; /* 제목 크기 확대 */
     font-weight: 700;
     color: #ececec;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .score-board {
     display: inline-block;
     background-color: #2c2c2c;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-size: 1.2rem;
+    padding: 15px 30px;
+    border-radius: 16px;
+    font-size: 1.8rem; /* 점수판 글자 확대 */
     font-weight: 600;
     color: #4facfe;
 }
 
 .quiz-section {
     display: flex;
-    gap: 30px;
+    gap: 50px;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
 .video-card {
     background-color: #252525;
-    border-radius: 16px;
-    padding: 20px;
-    width: 45%;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    width: 48%; /* 영상 카드 너비 확대 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     transition: transform 0.2s;
 }
 
 .video-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
 }
 
 .iframe-container {
     position: relative;
     width: 100%;
     padding-bottom: 56.25%;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
     background-color: #000;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
 }
 
 .iframe-container iframe {
@@ -88,30 +88,30 @@ body {
 }
 
 .song-title {
-    font-size: 1.2rem;
+    font-size: 1.8rem; /* 곡 제목 크기 확대 */
     font-weight: 700;
-    margin: 0 0 8px 0;
+    margin: 0 0 12px 0;
     color: #ffffff;
 }
 
 .artist-name {
-    font-size: 0.95rem;
+    font-size: 1.3rem; /* 가수 이름 크기 확대 */
     color: #aaaaaa;
     margin: 0;
 }
 
 .button-group {
     display: flex;
-    gap: 20px;
+    gap: 30px;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .answer-btn {
     flex: 1;
-    padding: 18px 24px;
-    border-radius: 14px;
-    font-size: 1.1rem;
+    padding: 25px 40px; /* 버튼 상하좌우 여백 확대 */
+    border-radius: 20px;
+    font-size: 1.6rem; /* 버튼 글자 확대 */
     font-weight: 700;
     cursor: pointer;
     border: none;
@@ -125,7 +125,7 @@ body {
 
 .btn-left:hover {
     background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    box-shadow: 0 8px 15px rgba(118, 75, 162, 0.4);
+    box-shadow: 0 10px 20px rgba(118, 75, 162, 0.5);
 }
 
 .btn-right {
@@ -134,12 +134,12 @@ body {
 
 .btn-right:hover {
     background: linear-gradient(135deg, #ffb199 0%, #ff0844 100%);
-    box-shadow: 0 8px 15px rgba(255, 8, 68, 0.4);
+    box-shadow: 0 10px 20px rgba(255, 8, 68, 0.5);
 }
 
 #feedback {
-    font-size: 1.3rem;
+    font-size: 1.8rem; /* 정답/오답 텍스트 확대 */
     font-weight: bold;
-    height: 30px;
-    margin-top: 20px;
+    height: 40px;
+    margin-top: 30px;
 }
