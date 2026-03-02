@@ -13,17 +13,69 @@ const quizData = [
 
 let currentIndex = 0;
 let currentScore = 0;
+let player1, player2;
+let isReady = false;
+
+// 유튜브 API가 준비되면 실행되는  함수
+function onYouTubeIframeAPIReady() {
+    player1 = new YT.Player('videoPlayer1', {
+        playerVars: { 'controls': 0, 'disablekb': 1, 'rel': 0 },
+        events: { 'onReady': onPlayerReady }
+    });
+    player2 = new YT.Player('videoPlayer2', {
+        playerVars: { 'controls': 0, 'disablekb': 1, 'rel': 0 },
+        events: { 'onReady': onPlayerReady }
+    });
+}
+
+let readyCount = 0;
+function onPlayerReady(event) {
+    readyCount++;
+    if (readyCount === 2) {
+        isReady = true;
+        setupHoverEvents(); // 마우스 이벤트 설정
+        renderQuiz(); // 첫 문제 로드
+    }
+}
 
 function renderQuiz() {
+    if (!isReady) return;
     const currentData = quizData[currentIndex];
     
-    document.getElementById('videoPlayer1').src = `https://www.youtube.com/embed/${currentData.options[0].id}?start=${currentData.options[0].start}&autoplay=1&mute=1&loop=1&playlist=${currentData.options[0].id}`;
+    // 영상을 미리 불러오기만 하고(cue), 재생은 하지 않음(정지 상태)
+    player1.cueVideoById({videoId: currentData.options[0].id, startSeconds: currentData.options[0].start});
     document.getElementById('title1').innerText = currentData.options[0].title;
     document.getElementById('artist1').innerText = currentData.options[0].artist;
 
-    document.getElementById('videoPlayer2').src = `https://www.youtube.com/embed/${currentData.options[1].id}?start=${currentData.options[1].start}&autoplay=1&mute=1&loop=1&playlist=${currentData.options[1].id}`;
+    player2.cueVideoById({videoId: currentData.options[1].id, startSeconds: currentData.options[1].start});
     document.getElementById('title2').innerText = currentData.options[1].title;
     document.getElementById('artist2').innerText = currentData.options[1].artist;
+}
+
+// 마우스를 올렸을 때 재생, 뗐을 때 일시정지
+function setupHoverEvents() {
+    const wrap1 = document.getElementById('wrapper1');
+    const wrap2 = document.getElementById('wrapper2');
+
+    wrap1.addEventListener('mouseenter', () => { 
+        if(player1 && player1.playVideo) {
+            player1.unMute(); // 소리 켜기
+            player1.playVideo(); 
+        }
+    });
+    wrap1.addEventListener('mouseleave', () => { 
+        if(player1 && player1.pauseVideo) player1.pauseVideo(); 
+    });
+
+    wrap2.addEventListener('mouseenter', () => { 
+        if(player2 && player2.playVideo) {
+            player2.unMute();
+            player2.playVideo(); 
+        }
+    });
+    wrap2.addEventListener('mouseleave', () => { 
+        if(player2 && player2.pauseVideo) player2.pauseVideo(); 
+    });
 }
 
 function submitAnswer(selectedIndex) {
@@ -49,5 +101,3 @@ function submitAnswer(selectedIndex) {
         feedbackText.innerText = `퀴즈 종료! 최종 점수: ${currentScore} / 10점`;
     }
 }
-
-window.onload = renderQuiz;
