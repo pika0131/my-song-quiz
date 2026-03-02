@@ -16,14 +16,13 @@ let currentScore = 0;
 let player1, player2;
 let isReady = false;
 
-// 유튜브 API가 준비되면 실행되는  함수
 function onYouTubeIframeAPIReady() {
     player1 = new YT.Player('videoPlayer1', {
-        playerVars: { 'controls': 0, 'disablekb': 1, 'rel': 0 },
+        playerVars: { 'controls': 0, 'disablekb': 1, 'rel': 0, 'autoplay': 0, 'mute': 1 },
         events: { 'onReady': onPlayerReady }
     });
     player2 = new YT.Player('videoPlayer2', {
-        playerVars: { 'controls': 0, 'disablekb': 1, 'rel': 0 },
+        playerVars: { 'controls': 0, 'disablekb': 1, 'rel': 0, 'autoplay': 0, 'mute': 1 },
         events: { 'onReady': onPlayerReady }
     });
 }
@@ -33,16 +32,27 @@ function onPlayerReady(event) {
     readyCount++;
     if (readyCount === 2) {
         isReady = true;
-        setupHoverEvents(); // 마우스 이벤트 설정
-        renderQuiz(); // 첫 문제 로드
+        setupHoverEvents(); 
     }
+}
+
+function startQuiz() {
+    if (!isReady) {
+        alert("유튜브 영상을 불러오는 중입니다. 잠시만 기다려주세요!");
+        return;
+    }
+    
+    // 시작 화면 덮개 지우기
+    document.getElementById('startScreen').style.display = 'none';
+    
+    // 1번 문제 로드
+    renderQuiz();
 }
 
 function renderQuiz() {
     if (!isReady) return;
     const currentData = quizData[currentIndex];
     
-    // 영상을 미리 불러오기만 하고(cue), 재생은 하지 않음(정지 상태)
     player1.cueVideoById({videoId: currentData.options[0].id, startSeconds: currentData.options[0].start});
     document.getElementById('title1').innerText = currentData.options[0].title;
     document.getElementById('artist1').innerText = currentData.options[0].artist;
@@ -52,14 +62,13 @@ function renderQuiz() {
     document.getElementById('artist2').innerText = currentData.options[1].artist;
 }
 
-// 마우스를 올렸을 때 재생, 뗐을 때 일시정지
 function setupHoverEvents() {
     const wrap1 = document.getElementById('wrapper1');
     const wrap2 = document.getElementById('wrapper2');
 
     wrap1.addEventListener('mouseenter', () => { 
         if(player1 && player1.playVideo) {
-            player1.unMute(); // 소리 켜기
+            player1.unMute(); 
             player1.playVideo(); 
         }
     });
@@ -99,5 +108,16 @@ function submitAnswer(selectedIndex) {
         document.getElementById('quizArea').style.display = 'none';
         feedbackText.style.color = "#ffffff";
         feedbackText.innerText = `퀴즈 종료! 최종 점수: ${currentScore} / 10점`;
+        document.getElementById('resetBtn').style.display = 'block';
     }
+}
+
+function resetQuiz() {
+    currentIndex = 0;
+    currentScore = 0;
+    document.getElementById('scoreDisplay').innerText = `현재 점수: 0점`;
+    document.getElementById('message').innerText = "";
+    document.getElementById('resetBtn').style.display = 'none';
+    document.getElementById('quizArea').style.display = 'block';
+    renderQuiz();
 }
