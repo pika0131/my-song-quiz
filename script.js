@@ -52,7 +52,10 @@ function startQuiz() {
 function renderQuiz() {
     if (!isReady) return;
     const currentData = quizData[currentIndex];
-    
+
+    player1.pauseVideo();
+    player2.pauseVideo();
+
     player1.cueVideoById({videoId: currentData.options[0].id, startSeconds: currentData.options[0].start});
     document.getElementById('title1').innerText = currentData.options[0].title;
     document.getElementById('artist1').innerText = currentData.options[0].artist;
@@ -107,7 +110,7 @@ function submitAnswer(selectedIndex) {
     } else {
         document.getElementById('quizArea').style.display = 'none';
         feedbackText.style.color = "#ffffff";
-        feedbackText.innerText = `퀴즈 종료! 최종 점수: ${currentScore} / 10점`;
+        feedbackText.innerText = `퀴즈 종료! 최종 점수: ${currentScore} / ${quizData.length}점`;
         document.getElementById('resetBtn').style.display = 'block';
     }
 }
@@ -121,3 +124,6 @@ function resetQuiz() {
     document.getElementById('quizArea').style.display = 'block';
     renderQuiz();
 }
+
+document.getElementById('startBtn').addEventListener('click', startQuiz);
+document.getElementById('resetBtn').addEventListener('click', resetQuiz);
